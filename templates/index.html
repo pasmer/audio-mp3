@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trascrizione Audio - Whisper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎙️ Trascrizione Audio</h1>
+            <p>Carica un file audio MP3 del tuo convegno per trascriverlo in testo</p>
+        </header>
+
+        <div class="status-section" id="statusSection">
+            <div class="status-indicator">
+                <span id="statusText">Verificando configurazione...</span>
+            </div>
+        </div>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".mp3,.wav,.ogg,.m4a" hidden>
+                    <div class="upload-content">
+                        <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="upload-text">Clicca per selezionare un file audio</p>
+                        <p class="upload-subtext">Oppure trascina il file qui</p>
+                        <p class="upload-formats">Formati supportati: MP3, WAV, OGG, M4A (max 500MB)</p>
+                    </div>
+                </div>
+
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <p><strong>File selezionato:</strong> <span id="fileName"></span></p>
+                    <p><strong>Dimensione:</strong> <span id="fileSize"></span></p>
+                    <button class="btn btn-primary" id="transcribeBtn">Inizia Trascrizione</button>
+                    <button class="btn btn-secondary" id="cancelBtn">Annulla</button>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-info">
+                    <h3>Trascrizione in corso...</h3>
+                    <p id="progressText">Caricamento del file...</p>
+                </div>
+                <div class="spinner"></div>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <div class="result-success">
+                    <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3>Trascrizione Completata!</h3>
+                    <p>Il file di testo è pronto per il download</p>
+                    <button class="btn btn-success" id="downloadBtn">Scarica Trascrizione</button>
+                    <button class="btn btn-secondary" id="newTranscriptionBtn">Nuova Trascrizione</button>
+                </div>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-message">
+                    <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3>Errore</h3>
+                    <p id="errorText"></p>
+                    <button class="btn btn-secondary" id="retryBtn">Riprova</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Trascrizione locale usando <strong>whisper-cpp</strong></p>
+            <p class="footer-note">I tuoi file audio rimangono privati e vengono processati localmente sul server</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

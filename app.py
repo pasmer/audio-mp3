@@ -93,6 +93,7 @@ def transcribe_audio(wav_path, output_txt_path):
             whisper_exe,
             '-m', model_path,
             '-f', wav_path,
+            '-l', 'it',  # Italian language
             '-otxt',  # output as text file
             '-of', output_txt_path.replace('.txt', '')  # whisper adds .txt automatically
         ]

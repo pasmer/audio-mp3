@@ -66,8 +66,9 @@ def transcribe_audio(wav_path, output_txt_path):
     try:
         # Path to whisper-cpp executable - try multiple locations
         whisper_exe_options = [
-            './whisper.cpp/build/bin/main',  # cmake build location
-            './whisper.cpp/main',             # make build location
+            './whisper.cpp/build/bin/whisper-cli',  # new cmake build location
+            './whisper.cpp/build/bin/main',          # deprecated cmake build
+            './whisper.cpp/main',                     # make build location
         ]
 
         whisper_exe = None
@@ -206,8 +207,9 @@ def status():
     """Check if whisper-cpp is properly installed"""
     # Check multiple possible locations for whisper executable
     whisper_exe_options = [
-        './whisper.cpp/build/bin/main',
-        './whisper.cpp/main',
+        './whisper.cpp/build/bin/whisper-cli',  # new cmake build location
+        './whisper.cpp/build/bin/main',          # deprecated cmake build
+        './whisper.cpp/main',                     # make build location
     ]
     whisper_installed = any(os.path.exists(exe) for exe in whisper_exe_options)
 

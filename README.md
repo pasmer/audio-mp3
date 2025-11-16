@@ -99,11 +99,11 @@ mv whisper.cpp/models/ggml-base.bin models/
 python3 app.py
 ```
 
-L'applicazione sarà disponibile su: **http://localhost:6000**
+L'applicazione sarà disponibile su: **http://localhost:8000**
 
 ### Usare l'applicazione
 
-1. Apri il browser su `http://localhost:6000`
+1. Apri il browser su `http://localhost:8000`
 2. Carica un file audio (MP3, WAV, OGG, M4A)
 3. Clicca su "Inizia Trascrizione"
 4. Attendi il completamento (il tempo dipende dalla lunghezza dell'audio)
@@ -170,7 +170,7 @@ MAX_FILE_SIZE = 500 * 1024 * 1024     # 500MB limite upload
 
 Modifica l'ultima riga di `app.py`:
 ```python
-app.run(debug=True, host='0.0.0.0', port=6000)  # Cambia la porta qui
+app.run(debug=True, host='0.0.0.0', port=8000)  # Cambia la porta qui
 ```
 
 ## 🐛 Risoluzione Problemi

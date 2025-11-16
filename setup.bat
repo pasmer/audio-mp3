@@ -86,6 +86,6 @@ echo.
 echo To start the application, run:
 echo   python app.py
 echo.
-echo Then open your browser at: http://localhost:6000
+echo Then open your browser at: http://localhost:8000
 echo.
 pause

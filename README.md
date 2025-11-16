@@ -105,9 +105,12 @@ L'applicazione sarà disponibile su: **http://localhost:8000**
 
 1. Apri il browser su `http://localhost:8000`
 2. Carica un file audio (MP3, WAV, OGG, M4A)
-3. Clicca su "Inizia Trascrizione"
-4. Attendi il completamento (il tempo dipende dalla lunghezza dell'audio)
-5. Scarica il file di testo con la trascrizione
+3. Seleziona il modello Whisper desiderato
+4. Clicca su "Inizia Trascrizione"
+5. Attendi il completamento (il tempo dipende dalla lunghezza dell'audio e dal modello)
+6. Scarica il file di testo con la trascrizione
+
+**Nota:** L'applicazione è configurata per **massima qualità di trascrizione**, utilizzando parametri ottimali di whisper-cpp (beam size 10, best-of 10, contesto audio completo). Questo garantisce la migliore accuratezza possibile, ma richiede più tempo e memoria rispetto alle configurazioni standard.
 
 ## 🎯 Modelli Whisper
 

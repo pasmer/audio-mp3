@@ -35,8 +35,10 @@ sudo apt-get install python3 python3-pip ffmpeg git build-essential
 
 #### macOS
 ```bash
-brew install python ffmpeg git
+brew install python ffmpeg git cmake
 ```
+
+**Nota:** cmake è necessario per compilare whisper.cpp su macOS.
 
 #### Fedora/RHEL
 ```bash
@@ -191,6 +193,25 @@ Installa ffmpeg:
 - Ubuntu/Debian: `sudo apt-get install ffmpeg`
 - macOS: `brew install ffmpeg`
 - Windows: Scarica da [ffmpeg.org](https://ffmpeg.org/download.html)
+
+### Errore: "cmake: No such file" su macOS
+Durante il setup, se vedi l'errore `cmake: No such file or directory`:
+
+**Soluzione 1 (Consigliata):**
+```bash
+brew install cmake
+./setup.sh
+```
+
+**Soluzione 2 (Manuale):**
+```bash
+cd whisper.cpp
+make main
+cd ..
+mkdir -p models
+bash whisper.cpp/models/download-ggml-model.sh base
+mv whisper.cpp/models/ggml-base.bin models/
+```
 
 ### L'upload è lento
 - Verifica la dimensione del file (max 500MB)

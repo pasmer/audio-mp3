@@ -130,6 +130,10 @@ transcribeBtn.addEventListener('click', startTranscription);
 async function startTranscription() {
     if (!selectedFile) return;
 
+    // Get selected model
+    const modelSelect = document.getElementById('modelSelect');
+    const selectedModel = modelSelect.value;
+
     // Hide file info, show progress
     fileInfo.style.display = 'none';
     progressSection.style.display = 'block';
@@ -137,6 +141,7 @@ async function startTranscription() {
 
     const formData = new FormData();
     formData.append('file', selectedFile);
+    formData.append('model', selectedModel);
 
     try {
         progressText.textContent = 'Trascrizione in corso... Questo potrebbe richiedere alcuni minuti.';

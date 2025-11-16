@@ -112,29 +112,35 @@ L'applicazione sarà disponibile su: **http://localhost:8000**
 
 ## 🎯 Modelli Whisper
 
-L'applicazione usa il modello **base** per default. Puoi usare altri modelli:
+L'applicazione supporta la **selezione del modello dall'interfaccia web**. Modelli disponibili:
 
-| Modello | Dimensione | Memoria | Velocità | Accuratezza |
-|---------|------------|---------|----------|-------------|
-| tiny    | 75 MB      | ~390 MB | Massima  | Bassa       |
-| base    | 142 MB     | ~500 MB | Alta     | Media       |
-| small   | 466 MB     | ~1 GB   | Media    | Buona       |
-| medium  | 1.5 GB     | ~2.6 GB | Bassa    | Molto Buona |
-| large   | 2.9 GB     | ~4.7 GB | Minima   | Massima     |
+| Modello | Dimensione | Memoria | Velocità | Accuratezza | Uso Consigliato |
+|---------|------------|---------|----------|-------------|-----------------|
+| tiny    | 75 MB      | ~390 MB | Massima  | Bassa       | Test rapidi     |
+| base    | 142 MB     | ~500 MB | Alta     | Media       | Uso generale (predefinito) |
+| small   | 466 MB     | ~1 GB   | Media    | Buona       | Audio di qualità |
+| medium  | 1.5 GB     | ~2.6 GB | Bassa    | Molto Buona | **Convegni e conferenze** |
+| large   | 2.9 GB     | ~4.7 GB | Minima   | Massima     | Massima precisione |
 
-### Cambiare modello
+### Scaricare modelli aggiuntivi
 
-1. **Scarica il modello:**
+Il setup automatico scarica solo il modello **base**. Per usare altri modelli (es. **medium** per trascrizioni più accurate):
+
 ```bash
+# Scarica il modello medium (consigliato per convegni)
 bash whisper.cpp/models/download-ggml-model.sh medium
 mv whisper.cpp/models/ggml-medium.bin models/
+
+# Oppure altri modelli
+bash whisper.cpp/models/download-ggml-model.sh small
+mv whisper.cpp/models/ggml-small.bin models/
+
+# Large (richiede molto spazio e tempo)
+bash whisper.cpp/models/download-ggml-model.sh large
+mv whisper.cpp/models/ggml-large.bin models/
 ```
 
-2. **Modifica `app.py`:**
-```python
-# Cambia questa riga (circa linea 65):
-model_path = './models/ggml-medium.bin'  # invece di ggml-base.bin
-```
+Dopo aver scaricato un modello, sarà disponibile nel menu a tendina dell'interfaccia web.
 
 ## 🏗️ Struttura del Progetto
 

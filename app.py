@@ -61,7 +61,7 @@ def convert_to_wav(input_path, output_path):
         return False
 
 
-def transcribe_audio(wav_path, output_txt_path):
+def transcribe_audio(wav_path, output_txt_path, model_name='base'):
     """Transcribe audio using whisper-cpp"""
     try:
         # Path to whisper-cpp executable - try multiple locations
@@ -77,7 +77,8 @@ def transcribe_audio(wav_path, output_txt_path):
                 whisper_exe = exe_path
                 break
 
-        model_path = './models/ggml-base.bin'
+        # Construct model path based on model name
+        model_path = f'./models/ggml-{model_name}.bin'
 
         # Check if whisper and model exist
         if not whisper_exe:
@@ -86,7 +87,7 @@ def transcribe_audio(wav_path, output_txt_path):
 
         if not os.path.exists(model_path):
             logger.error(f"Model not found at {model_path}")
-            return False, "Whisper model not found"
+            return False, f"Whisper model '{model_name}' not found. Please download it first."
 
         # Run whisper-cpp
         cmd = [
@@ -135,6 +136,14 @@ def upload_file():
         if not allowed_file(file.filename):
             return jsonify({'error': 'Invalid file type. Allowed: mp3, wav, ogg, m4a'}), 400
 
+        # Get selected model (default to 'base' if not provided)
+        model_name = request.form.get('model', 'base')
+
+        # Validate model name
+        valid_models = ['tiny', 'base', 'small', 'medium', 'large']
+        if model_name not in valid_models:
+            return jsonify({'error': f'Invalid model. Choose from: {", ".join(valid_models)}'}), 400
+
         # Generate unique ID for this transcription
         job_id = str(uuid.uuid4())
 
@@ -155,9 +164,9 @@ def upload_file():
 
         # Transcribe
         output_txt_path = os.path.join(app.config['TRANSCRIPTION_FOLDER'], f"{job_id}.txt")
-        logger.info(f"Starting transcription for job {job_id}...")
+        logger.info(f"Starting transcription for job {job_id} with model {model_name}...")
 
-        success, error_msg = transcribe_audio(wav_path, output_txt_path)
+        success, error_msg = transcribe_audio(wav_path, output_txt_path, model_name)
 
         # Clean up temporary files
         try:

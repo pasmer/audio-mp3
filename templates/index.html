@@ -36,6 +36,17 @@
                 <div class="file-info" id="fileInfo" style="display: none;">
                     <p><strong>File selezionato:</strong> <span id="fileName"></span></p>
                     <p><strong>Dimensione:</strong> <span id="fileSize"></span></p>
+                    <div class="model-selector">
+                        <label for="modelSelect"><strong>Modello Whisper:</strong></label>
+                        <select id="modelSelect" class="model-select">
+                            <option value="tiny">Tiny (75 MB) - Veloce, meno accurato</option>
+                            <option value="base" selected>Base (142 MB) - Bilanciato (predefinito)</option>
+                            <option value="small">Small (466 MB) - Buona accuratezza</option>
+                            <option value="medium">Medium (1.5 GB) - Molto accurato</option>
+                            <option value="large">Large (2.9 GB) - Massima accuratezza</option>
+                        </select>
+                        <p class="model-note" id="modelNote">Nota: assicurati di aver scaricato il modello selezionato</p>
+                    </div>
                     <button class="btn btn-primary" id="transcribeBtn">Inizia Trascrizione</button>
                     <button class="btn btn-secondary" id="cancelBtn">Annulla</button>
                 </div>

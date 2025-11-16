@@ -89,8 +89,8 @@ def transcribe_audio(wav_path, output_txt_path, model_name='base'):
             logger.error(f"Model not found at {model_path}")
             return False, f"Whisper model '{model_name}' not found. Please download it first."
 
-        # Run whisper-cpp with optimized parameters for long audio files
-        # Reduced memory usage for better handling of long recordings
+        # Run whisper-cpp with maximum quality parameters
+        # No memory/time constraints - optimized for best transcription quality
         cmd = [
             whisper_exe,
             '-m', model_path,
@@ -99,9 +99,9 @@ def transcribe_audio(wav_path, output_txt_path, model_name='base'):
             '-t', '8',        # Use 8 threads for faster processing
             '-mc', '-1',      # No limit on text context tokens
             '-ml', '0',       # No limit on segment length
-            '-ac', '1500',    # Limit audio context to reduce memory (instead of 0=all)
-            '-bs', '3',       # Reduce beam size from 5 to 3 (less memory)
-            '-bo', '3',       # Reduce best-of from 5 to 3 (less memory)
+            '-ac', '0',       # Process all audio context (no limit)
+            '-bs', '10',      # Beam size 10 for maximum quality (default: 5)
+            '-bo', '10',      # Best-of 10 for maximum quality (default: 5)
             '-pp',            # Print progress
             '-otxt',          # output as text file
             '-of', output_txt_path.replace('.txt', '')  # whisper adds .txt automatically

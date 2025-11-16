@@ -66,9 +66,45 @@ fi
 echo ""
 echo "Building whisper.cpp..."
 cd whisper.cpp
-make
+
+# Try to build with make directly first
+# On macOS, we can compile without cmake
+if make main 2>/dev/null; then
+    echo "whisper.cpp built successfully with make!"
+elif command -v cmake &> /dev/null; then
+    echo "Building with cmake..."
+    cmake -B build
+    cmake --build build --config Release
+    # Copy executable to main directory
+    if [ -f "build/bin/main" ]; then
+        cp build/bin/main ./main
+    elif [ -f "build/bin/Release/main" ]; then
+        cp build/bin/Release/main ./main
+    fi
+    echo "whisper.cpp built successfully with cmake!"
+else
+    echo ""
+    echo "Note: cmake is not installed. Trying direct compilation..."
+    echo "Compiling main executable..."
+    # Compile directly for macOS ARM
+    c++ -std=c++11 -O3 -I. -Iggml/include -Iggml/src \
+        ggml/src/ggml.c ggml/src/ggml-alloc.c ggml/src/ggml-backend.c \
+        ggml/src/ggml-quants.c ggml/src/ggml-aarch64.c \
+        src/whisper.cpp examples/main/main.cpp \
+        -o main \
+        -framework Accelerate \
+        || {
+            echo ""
+            echo "Error: Failed to compile whisper.cpp"
+            echo "Please install cmake with: brew install cmake"
+            echo "Then run this script again."
+            cd ..
+            exit 1
+        }
+    echo "whisper.cpp built successfully!"
+fi
+
 cd ..
-echo "whisper.cpp built successfully!"
 echo ""
 
 # Download Whisper model

@@ -64,13 +64,23 @@ def convert_to_wav(input_path, output_path):
 def transcribe_audio(wav_path, output_txt_path):
     """Transcribe audio using whisper-cpp"""
     try:
-        # Path to whisper-cpp executable
-        whisper_exe = './whisper.cpp/main'
+        # Path to whisper-cpp executable - try multiple locations
+        whisper_exe_options = [
+            './whisper.cpp/build/bin/main',  # cmake build location
+            './whisper.cpp/main',             # make build location
+        ]
+
+        whisper_exe = None
+        for exe_path in whisper_exe_options:
+            if os.path.exists(exe_path):
+                whisper_exe = exe_path
+                break
+
         model_path = './models/ggml-base.bin'
 
         # Check if whisper and model exist
-        if not os.path.exists(whisper_exe):
-            logger.error(f"whisper-cpp executable not found at {whisper_exe}")
+        if not whisper_exe:
+            logger.error(f"whisper-cpp executable not found. Tried: {whisper_exe_options}")
             return False, "whisper-cpp not installed"
 
         if not os.path.exists(model_path):
@@ -194,11 +204,17 @@ def download_transcription(job_id):
 @app.route('/api/status', methods=['GET'])
 def status():
     """Check if whisper-cpp is properly installed"""
-    whisper_exe = './whisper.cpp/main'
+    # Check multiple possible locations for whisper executable
+    whisper_exe_options = [
+        './whisper.cpp/build/bin/main',
+        './whisper.cpp/main',
+    ]
+    whisper_installed = any(os.path.exists(exe) for exe in whisper_exe_options)
+
     model_path = './models/ggml-base.bin'
 
     return jsonify({
-        'whisper_installed': os.path.exists(whisper_exe),
+        'whisper_installed': whisper_installed,
         'model_available': os.path.exists(model_path),
         'ffmpeg_available': subprocess.run(['which', 'ffmpeg'], capture_output=True).returncode == 0
     })

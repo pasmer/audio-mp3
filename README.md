@@ -106,9 +106,12 @@ L'applicazione sarà disponibile su: **http://localhost:8000**
 
 1. Apri il browser su `http://localhost:8000`
 2. Carica un file audio (MP3, WAV, OGG, M4A)
-3. Clicca su "Inizia Trascrizione"
-4. Attendi il completamento (il tempo dipende dalla lunghezza dell'audio)
-5. Scarica il file di testo con la trascrizione
+3. Seleziona il modello Whisper desiderato
+4. Clicca su "Inizia Trascrizione"
+5. Attendi il completamento (il tempo dipende dalla lunghezza dell'audio e dal modello)
+6. Scarica il file di testo con la trascrizione
+
+**Nota:** L'applicazione è configurata per **massima qualità di trascrizione**, utilizzando parametri ottimali di whisper-cpp (beam size 10, best-of 10, contesto audio completo). Questo garantisce la migliore accuratezza possibile, ma richiede più tempo e memoria rispetto alle configurazioni standard.
 
 ## 🎯 Modelli Whisper
 
@@ -118,9 +121,17 @@ L'applicazione supporta la **selezione del modello dall'interfaccia web**. Model
 |---------|------------|---------|----------|-------------|-----------------|
 | tiny    | 75 MB      | ~390 MB | Massima  | Bassa       | Test rapidi     |
 | base    | 142 MB     | ~500 MB | Alta     | Media       | Uso generale (predefinito) |
-| small   | 466 MB     | ~1 GB   | Media    | Buona       | Audio di qualità |
-| medium  | 1.5 GB     | ~2.6 GB | Bassa    | Molto Buona | **Convegni e conferenze** |
-| large   | 2.9 GB     | ~4.7 GB | Minima   | Massima     | Massima precisione |
+| small   | 466 MB     | ~1 GB   | Media    | Buona       | **Convegni lunghi (>1h)** |
+| medium  | 1.5 GB     | ~2.6 GB | Bassa    | Molto Buona | Audio brevi ad alta qualità |
+| large   | 2.9 GB     | ~4.7 GB | Minima   | Massima     | Massima precisione (file brevi) |
+
+### ⚠️ Nota importante per file audio lunghi
+
+Per **convegni e registrazioni >1 ora** su MacBook Air M4 16GB RAM:
+- ✅ **Consigliato: Small** - Gestisce bene file di 1h+ e completa la trascrizione
+- ⚠️ **Medium/Large** - Possono interrompersi prematuramente su file molto lunghi a causa di limiti di memoria
+
+Se la trascrizione si interrompe con `[... ... ...]`, prova a usare il modello Small.
 
 ### Scaricare modelli aggiuntivi
 
@@ -224,10 +235,19 @@ mv whisper.cpp/models/ggml-base.bin models/
 - Verifica la dimensione del file (max 500MB)
 - Per file grandi, usa un modello più piccolo (tiny o base)
 
+### La trascrizione si interrompe con "[... ... ...]"
+Questo succede quando whisper-cpp esaurisce la memoria su file audio molto lunghi:
+
+**Soluzione:**
+- Usa il modello **Small** invece di Medium o Large
+- Il modello Small gestisce meglio file di 1+ ora con meno memoria
+- Testato su MacBook Air M4 16GB: Small completa file di 1h17min, Medium si interrompe
+
 ### La trascrizione non è accurata
-- Usa un modello più grande (medium o large)
+- Per audio brevi (<30 min), usa un modello più grande (medium o large)
+- Per audio lunghi (>1 ora), usa Small (miglior compromesso accuratezza/affidabilità)
 - Verifica la qualità dell'audio originale
-- Per lingue diverse dall'inglese, assicurati che il modello supporti quella lingua
+- L'app è configurata per lingua italiana; per altre lingue modifica il parametro `-l` in app.py
 
 ## 🌐 Lingue Supportate
 

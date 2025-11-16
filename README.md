@@ -1,6 +1,7 @@
 # 🎙️ Audio Transcription App
 
 Applicazione web per trascrivere file audio (MP3, WAV, OGG, M4A) in testo usando **whisper-cpp** in locale.
+Versione testata su MacOs.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-green.svg)

@@ -89,13 +89,18 @@ def transcribe_audio(wav_path, output_txt_path, model_name='base'):
             logger.error(f"Model not found at {model_path}")
             return False, f"Whisper model '{model_name}' not found. Please download it first."
 
-        # Run whisper-cpp
+        # Run whisper-cpp with optimized parameters for long audio files
         cmd = [
             whisper_exe,
             '-m', model_path,
             '-f', wav_path,
-            '-l', 'it',  # Italian language
-            '-otxt',  # output as text file
+            '-l', 'it',       # Italian language
+            '-t', '8',        # Use 8 threads for faster processing
+            '-mc', '-1',      # No limit on text context tokens
+            '-ml', '0',       # No limit on segment length
+            '-ac', '0',       # Process all audio context
+            '-pp',            # Print progress
+            '-otxt',          # output as text file
             '-of', output_txt_path.replace('.txt', '')  # whisper adds .txt automatically
         ]
 
